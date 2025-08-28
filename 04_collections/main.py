@@ -11,23 +11,47 @@ Why:
 """
 from __future__ import annotations
 
+from collections import defaultdict
+
 PEOPLE = [
     {"first": "Ada", "last": "Lovelace", "email": "ada@example.com"},
     {"first": "Alan", "last": "Turing", "email": "alan@example.org"},
     {"first": "Grace", "last": "Hopper", "email": "grace@navy.mil"},
+    {"first": "Bob", "last": "Greene", "email": "bob@example.com"},
+    {"first": "Charlie", "last": "Bucket", "email": "charlie@navy.mil"}
 ]
 
 def unique_domains(people: list[dict]) -> set[str]:
-    # TODO
-    return set()
+    domains = []
+    for person in people:
+        if person["email"]:
+            split_email = person["email"].split("@")
+            domains.append(split_email[1])
+    return set(domains)
 
 def domain_counts(people: list[dict]) -> dict[str, int]:
-    # TODO
-    return {}
+    domain_dict = {}
+    for person in people:
+        if person["email"]:
+            split_email = person["email"].split("@")
+            if split_email[1] in domain_dict.keys():
+                email_count = domain_dict.get(split_email[1])
+                domain_dict[split_email[1]] = email_count + 1
+            else:
+                domain_dict.update({split_email[1]: 1})
+        else:
+            print(f"{domain_dict[person["first"]]} doesn't have an email address")
+            continue
+    return domain_dict
 
 def sorted_names(people: list[dict]) -> list[str]:
-    # TODO
-    return []
+    names = []
+    for person in people:
+        names.append(person["last"] + ", " + person["first"])
+
+    return sorted(names)
 
 if __name__ == "__main__":
-    print("TODO")
+    print(unique_domains(PEOPLE))
+    print(domain_counts(PEOPLE))
+    print(sorted_names(PEOPLE))

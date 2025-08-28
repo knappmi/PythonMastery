@@ -17,11 +17,17 @@ import sys
 
 def transform(line: str) -> str:
     # TODO: parse and transform a single line
-    return "TODO"
+    split = line.split(",")
+    first = split[0].strip()
+    last = split[1].upper()
+    email = split[2].strip()
+    return f"{last}, {first} {email}"
 
 def main(argv: list[str]) -> int:
     # TODO: read stdin, transform, and print lines
-    print("TODO")
+    input = sys.stdin.read().splitlines()
+    for line in input:
+        print(transform(line))
     return 0
 
 if __name__ == "__main__":

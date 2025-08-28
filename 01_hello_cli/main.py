@@ -20,7 +20,6 @@ from __future__ import annotations
 import sys
 
 def main(argv: list[str]) -> int:
-    # TODO: implement
     if len(argv) == 0:
         return "Hello, World!"
     else:
