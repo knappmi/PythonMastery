@@ -15,8 +15,17 @@ def timeit(func):
     # TODO: implement decorator that prints runtime
     @wraps(func)
     def wrapper(*args, **kwargs):
-        return "TODO"
+        start = time.perf_counter()
+        value = func(*args, **kwargs)
+        end = time.perf_counter()
+        print(f"{func.__name__} took {end - start} seconds")
+        return value
     return wrapper
 
 if __name__ == "__main__":
-    print("TODO")
+    @timeit
+    def slow_func(t):
+        time.sleep(t)
+        return print(f"Slow function complete")
+
+    slow_func(1)

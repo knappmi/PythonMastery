@@ -1,28 +1,37 @@
-"""Problem 05 — Functions & higher-order
-
-Goal:
-  Implement a tiny pipeline framework where you can compose simple transforms:
-    pipeline = compose(strip, lower, title)
-    result = pipeline("   hello WORLD  ")
-  Add an optional `predicate` to conditionally apply a step.
-
-Why:
-  Teaches function defs, callables, closures, and composition.
-"""
 from __future__ import annotations
-from typing import Callable, Iterable
+from typing import Callable
 
-def compose(*funcs: Callable[[str], str]) -> Callable[[str], str]:
-    # TODO: return a function that applies funcs left-to-right
+StrFn = Callable[[str], str]
+Pred  = Callable[[str], bool]
+
+def compose(*funcs: StrFn) -> StrFn:
+    """
+    Return a function that applies the given functions left-to-right.
+    compose(f, g, h)("x") == h(g(f("x")))
+    If no functions are provided, return the identity function.
+    """
     def inner(s: str) -> str:
-        return "TODO"
+        for fn in funcs:
+            s = fn(s)
+        return s
     return inner
 
-def maybe(step: Callable[[str], str], predicate: Callable[[str], bool]) -> Callable[[str], str]:
-    # TODO: only apply step if predicate(s) is True
+def maybe(step: StrFn, predicate: Pred) -> StrFn:
+    """
+    Return a function that applies `step` only when predicate(s) is True,
+    otherwise returns the input unchanged.
+    """
     def inner(s: str) -> str:
-        return "TODO"
+        return step(s) if predicate(s) else s
     return inner
+
 
 if __name__ == "__main__":
-    print("TODO")
+    pipeline = compose(str.strip, str.lower, str.title)
+    print(pipeline("   hello WORLD  "))  # -> "Hello World"
+
+    # Conditional step: capitalize only if the string looks "shouty"
+    is_shouty = lambda s: any(c.isalpha() for c in s) and s == s.upper()
+    pipeline2 = compose(str.strip, maybe(str.title, is_shouty))
+    print(pipeline2("   HELLO WORLD  "))  # -> "Hello World"
+    print(pipeline2("   hello world  "))  # -> "hello world"

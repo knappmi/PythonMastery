@@ -13,8 +13,17 @@ from contextlib import contextmanager
 
 @contextmanager
 def cd(path: str):
-    # TODO: change into `path` then restore original dir
-    yield "TODO"
+    try:
+        prev_path = os.getcwd()
+        os.chdir(path)
+        yield
+    finally:
+        os.chdir(prev_path)
 
 if __name__ == "__main__":
-    print("TODO")
+    print("Before:", os.getcwd())
+
+    with cd("/Users/michaelknapp/PycharmProjects/"):
+        print("Inside:", os.getcwd())
+
+    print("After:", os.getcwd())

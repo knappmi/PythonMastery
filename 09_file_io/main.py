@@ -15,7 +15,13 @@ import sys, os
 
 def main(argv: list[str]) -> int:
     # TODO: read stdin and write uppercase lines to output.txt next to this script
-    print("TODO")
+    with open('09_file_io/output.txt', 'w') as output:
+        output.write('')
+    with open(argv[0]) as file:
+        for line in file:
+            upper = line.capitalize()
+            with open(f'09_file_io/output.txt', 'a') as output:
+                output.write(upper)
     return 0
 
 if __name__ == "__main__":
